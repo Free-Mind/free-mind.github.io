@@ -201,7 +201,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -211,7 +211,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -283,7 +283,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-15T20:20:02+08:00">
                 2017-08-15
@@ -304,7 +304,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -405,6 +405,143 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/IIFE基本理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Never">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/22/IIFE基本理解/" itemprop="url">IIFE</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">javascript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>私有变量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function makeCounter() &#123;</div><div class="line">    var i = 0;</div><div class="line">    return function()&#123;</div><div class="line">        console.log(++i);</div><div class="line">    &#125;;   </div><div class="line">&#125;</div><div class="line">//记住：`counter`和`counter2`都有他们自己的变量 `i`</div><div class="line">var counter = makeCounter();</div><div class="line">counter();//1</div><div class="line">counter();//2</div><div class="line"></div><div class="line">var counter2 = makeCounter();</div><div class="line">counter2();//1</div><div class="line">counter2();//2</div></pre></td></tr></table></figure></p>
+<p>使用闭包保存变量的状态：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">//它的运行原理可能并不像你想的那样，因为`i`的值从来没有被锁定。相反的，每个链接，当被点击时(循环已经被很好的执行完毕)，因此会弹出所有元素的总数，因为这是`i`此时的真实值。</div><div class="line">var elems = document.getElementsByTagName(&apos;a&apos;);</div><div class="line">for(var i = 0;i &lt; elems.length; i++ ) &#123;</div><div class="line">    elems[i].addEventListener(&apos;click&apos;,function(e)&#123;</div><div class="line">        e.preventDefault();</div><div class="line">        alert(&apos;I am link #&apos; + i)</div><div class="line">        &#125;,false);</div><div class="line">&#125;</div><div class="line">//而像下面这样改写，便可以了，因为在IIFE里，`i`值被锁定在了`lockedInIndex`里。在循环结束执行时，尽管`i`值的数值是所有元素的总和，但每一次函数表达式被调用时，IIFE里的`lockedInIndex`值都是`i`传给它的值,所以当链接被点击时，正确的值被弹出。</div><div class="line">var elems = document.getElementsByTagName(&apos;a&apos;);</div><div class="line">for(var i = 0;i &lt; elems.length;i++) &#123;</div><div class="line">    (function(lockedInIndex)&#123;</div><div class="line">        elems[i].addEventListener(&apos;click&apos;,function(e)&#123;</div><div class="line">            e.preventDefault();</div><div class="line">            alert(&apos;I am link #&apos; + lockedInIndex);</div><div class="line">            &#125;,false)</div><div class="line">    &#125;)(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>模块化：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var counter = (function()&#123;</div><div class="line">    var i = 0;</div><div class="line">    return &#123;</div><div class="line">        get: function()&#123;</div><div class="line">            return i;</div><div class="line">        &#125;,</div><div class="line">        set: function(val)&#123;</div><div class="line">            i = val;</div><div class="line">        &#125;,</div><div class="line">        increment: function()&#123;</div><div class="line">            return ++i;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    &#125;());</div><div class="line">    counter.get();//0</div><div class="line">    counter.set(3);</div><div class="line">    counter.increment();//4</div><div class="line">    counter.increment();//5</div></pre></td></tr></table></figure></p>
+<p>实际上实例化了一个对象，并且赋值给了counter变量</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/JS定义函数的三种方式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -434,7 +571,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
                 2017-07-22
@@ -455,7 +592,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -547,294 +684,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/SpringMVC 统一异常处理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Never">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/22/SpringMVC 统一异常处理/" itemprop="url">SpringMVC 异常统一处理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
-                2017-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="SpringMVC-异常统一处理"><a href="#SpringMVC-异常统一处理" class="headerlink" title="SpringMVC 异常统一处理"></a>SpringMVC 异常统一处理</h1><p>使用springMVC中的注解：@ControllerAdvice 来实现系统中异常的统一处理</p>
-<ul>
-<li>1.代码目录中新建一个异常处理类：SimpleException.java</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">package com.springmvc.exceptions;</div><div class="line"></div><div class="line">import javax.servlet.http.HttpServletRequest;</div><div class="line">import org.springframework.web.bind.annotation.ControllerAdvice;</div><div class="line">import org.springframework.web.bind.annotation.ExceptionHandler;</div><div class="line">import org.springframework.web.bind.annotation.ResponseBody;</div><div class="line"></div><div class="line">@ControllerAdvice</div><div class="line">public class SimpleException&#123;</div><div class="line"></div><div class="line">	@ExceptionHandler(ArithmeticException.class)</div><div class="line">	@ResponseBody</div><div class="line">	public String handleException(HttpServletRequest request,Exception ex)&#123;</div><div class="line">		return &quot;catch a Exception&quot;;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>注解：@ExceptionHandler可以定义哪种异常需要被捕获</p>
-<ul>
-<li>2.在spring-mvc.xml添加配置，让注解：@ControllerAdvice能够被spring扫描器获取<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">    &lt;context:component-scan base-package=&quot;com.springmvc&quot;&gt;</div><div class="line">	&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;</div><div class="line">	&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.web.bind.annotation.ControllerAdvice&quot;/&gt;</div><div class="line">&lt;/context:component-scan&gt;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>其中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.web.bind.annotation.ControllerAdvice&quot;/&gt;</div></pre></td></tr></table></figure></p>
-<p>使得注解能够生效</p>
-<ul>
-<li>3.编写测试代码：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">   @ResponseBody</div><div class="line">@RequestMapping(value=&quot;/exception&quot;)</div><div class="line">public TestPOJO getException()&#123;</div><div class="line">	TestPOJO person = new TestPOJO();</div><div class="line">	person.setAge(11);</div><div class="line">	person.setUserName(&quot;kevin&quot;);</div><div class="line">	int a = 3/0;</div><div class="line">	return person;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>这个方法中，除数为0 ，会抛出一个ArithmeticException。这个异常将会被SimpleException中的handleException所捕获。</p>
-<p><img src="/images/ex.png" alt="ex.png"></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/IIFE基本理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Never">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/22/IIFE基本理解/" itemprop="url">IIFE</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
-                2017-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>私有变量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function makeCounter() &#123;</div><div class="line">    var i = 0;</div><div class="line">    return function()&#123;</div><div class="line">        console.log(++i);</div><div class="line">    &#125;;   </div><div class="line">&#125;</div><div class="line">//记住：`counter`和`counter2`都有他们自己的变量 `i`</div><div class="line">var counter = makeCounter();</div><div class="line">counter();//1</div><div class="line">counter();//2</div><div class="line"></div><div class="line">var counter2 = makeCounter();</div><div class="line">counter2();//1</div><div class="line">counter2();//2</div></pre></td></tr></table></figure></p>
-<p>使用闭包保存变量的状态：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">//它的运行原理可能并不像你想的那样，因为`i`的值从来没有被锁定。相反的，每个链接，当被点击时(循环已经被很好的执行完毕)，因此会弹出所有元素的总数，因为这是`i`此时的真实值。</div><div class="line">var elems = document.getElementsByTagName(&apos;a&apos;);</div><div class="line">for(var i = 0;i &lt; elems.length; i++ ) &#123;</div><div class="line">    elems[i].addEventListener(&apos;click&apos;,function(e)&#123;</div><div class="line">        e.preventDefault();</div><div class="line">        alert(&apos;I am link #&apos; + i)</div><div class="line">        &#125;,false);</div><div class="line">&#125;</div><div class="line">//而像下面这样改写，便可以了，因为在IIFE里，`i`值被锁定在了`lockedInIndex`里。在循环结束执行时，尽管`i`值的数值是所有元素的总和，但每一次函数表达式被调用时，IIFE里的`lockedInIndex`值都是`i`传给它的值,所以当链接被点击时，正确的值被弹出。</div><div class="line">var elems = document.getElementsByTagName(&apos;a&apos;);</div><div class="line">for(var i = 0;i &lt; elems.length;i++) &#123;</div><div class="line">    (function(lockedInIndex)&#123;</div><div class="line">        elems[i].addEventListener(&apos;click&apos;,function(e)&#123;</div><div class="line">            e.preventDefault();</div><div class="line">            alert(&apos;I am link #&apos; + lockedInIndex);</div><div class="line">            &#125;,false)</div><div class="line">    &#125;)(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>模块化：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var counter = (function()&#123;</div><div class="line">    var i = 0;</div><div class="line">    return &#123;</div><div class="line">        get: function()&#123;</div><div class="line">            return i;</div><div class="line">        &#125;,</div><div class="line">        set: function(val)&#123;</div><div class="line">            i = val;</div><div class="line">        &#125;,</div><div class="line">        increment: function()&#123;</div><div class="line">            return ++i;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    &#125;());</div><div class="line">    counter.get();//0</div><div class="line">    counter.set(3);</div><div class="line">    counter.increment();//4</div><div class="line">    counter.increment();//5</div></pre></td></tr></table></figure></p>
-<p>实际上实例化了一个对象，并且赋值给了counter变量</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/js变量作用域/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -864,7 +713,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
                 2017-07-22
@@ -885,7 +734,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1007,7 +856,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
                 2017-07-22
@@ -1028,7 +877,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1140,6 +989,157 @@ afterCompletion
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/SpringMVC 统一异常处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Never">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/22/SpringMVC 统一异常处理/" itemprop="url">SpringMVC 异常统一处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="SpringMVC-异常统一处理"><a href="#SpringMVC-异常统一处理" class="headerlink" title="SpringMVC 异常统一处理"></a>SpringMVC 异常统一处理</h1><p>使用springMVC中的注解：@ControllerAdvice 来实现系统中异常的统一处理</p>
+<ul>
+<li>1.代码目录中新建一个异常处理类：SimpleException.java</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">package com.springmvc.exceptions;</div><div class="line"></div><div class="line">import javax.servlet.http.HttpServletRequest;</div><div class="line">import org.springframework.web.bind.annotation.ControllerAdvice;</div><div class="line">import org.springframework.web.bind.annotation.ExceptionHandler;</div><div class="line">import org.springframework.web.bind.annotation.ResponseBody;</div><div class="line"></div><div class="line">@ControllerAdvice</div><div class="line">public class SimpleException&#123;</div><div class="line"></div><div class="line">	@ExceptionHandler(ArithmeticException.class)</div><div class="line">	@ResponseBody</div><div class="line">	public String handleException(HttpServletRequest request,Exception ex)&#123;</div><div class="line">		return &quot;catch a Exception&quot;;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注解：@ExceptionHandler可以定义哪种异常需要被捕获</p>
+<ul>
+<li>2.在spring-mvc.xml添加配置，让注解：@ControllerAdvice能够被spring扫描器获取<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">    &lt;context:component-scan base-package=&quot;com.springmvc&quot;&gt;</div><div class="line">	&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;</div><div class="line">	&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.web.bind.annotation.ControllerAdvice&quot;/&gt;</div><div class="line">&lt;/context:component-scan&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.web.bind.annotation.ControllerAdvice&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<p>使得注解能够生效</p>
+<ul>
+<li>3.编写测试代码：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">   @ResponseBody</div><div class="line">@RequestMapping(value=&quot;/exception&quot;)</div><div class="line">public TestPOJO getException()&#123;</div><div class="line">	TestPOJO person = new TestPOJO();</div><div class="line">	person.setAge(11);</div><div class="line">	person.setUserName(&quot;kevin&quot;);</div><div class="line">	int a = 3/0;</div><div class="line">	return person;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这个方法中，除数为0 ，会抛出一个ArithmeticException。这个异常将会被SimpleException中的handleException所捕获。</p>
+<p><img src="/images/ex.png" alt="ex.png"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/require.js的使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1169,7 +1169,7 @@ afterCompletion
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
                 2017-07-22
@@ -1190,7 +1190,7 @@ afterCompletion
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1280,117 +1280,6 @@ afterCompletion
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/21/Requiesjs的基本使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Never">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/21/Requiesjs的基本使用/" itemprop="url">Requiesjs的基本使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-21T23:09:45+08:00">
-                2016-08-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1437,8 +1326,8 @@ afterCompletion
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">8</span>
-                <span class="site-state-item-name">posts</span>
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
           
@@ -1449,7 +1338,7 @@ afterCompletion
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">2</span>
-                <span class="site-state-item-name">categories</span>
+                <span class="site-state-item-name">Kategorien</span>
               
             </div>
           
@@ -1460,7 +1349,7 @@ afterCompletion
             <div class="site-state-item site-state-tags">
               
                 <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">tags</span>
+                <span class="site-state-item-name">Tags</span>
               
             </div>
           
@@ -1510,7 +1399,7 @@ afterCompletion
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
