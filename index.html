@@ -254,6 +254,297 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/16/私有变量和私有方法的实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Never">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/16/私有变量和私有方法的实现/" itemprop="url">私有变量和私有方法的实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-16T20:16:02+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">javascript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-利用WeakMap实现私有变量"><a href="#1-利用WeakMap实现私有变量" class="headerlink" title="1. 利用WeakMap实现私有变量"></a>1. 利用WeakMap实现私有变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//a.js</div><div class="line">const _counter = new WeakMap();</div><div class="line"></div><div class="line">class CountDown&#123;</div><div class="line">	constructor(count)&#123;</div><div class="line">		_counter.set(this,count);</div><div class="line">	&#125;</div><div class="line">	setCount(count)&#123;</div><div class="line">		_counter.set(this,count);</div><div class="line">	&#125;</div><div class="line">	getCount()&#123;</div><div class="line">		return _counter.get(this);</div><div class="line">	&#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>① 将this作为weakMap的key值，当实例化后的对象被不再使用的时候，weakMap中的key也会被垃圾回收</p>
+<p>② 在class外部实例化一个weakMap对象，这样，在a.js这个文件（模块）内部，_counter这个变量是可以被共享的，但是，在这个文件以外，就是不可见的。通过这种方式，实现私有变量；</p>
+<p>③ 实现getter，setter方法，提供对私有变量的修改</p>
+<h3 id="2-实现私有方法"><a href="#2-实现私有方法" class="headerlink" title="2. 实现私有方法"></a>2. 实现私有方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//b.js</div><div class="line">function privateSay() &#123;</div><div class="line">	console.log(&quot;private say: &quot;+this.age);</div><div class="line">&#125;</div><div class="line"></div><div class="line">class  CountDown&#123;</div><div class="line">	constructor(age)&#123;</div><div class="line">		this.age = age;</div><div class="line">	&#125;</div><div class="line">	say()&#123;</div><div class="line">		console.log(this.age);</div><div class="line">		privateSay.bind(this)();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>同样，也是通过在class 外部定义方法，在b.js 的内部，方法是可以被访问的，但是在模块的外部，确实不可见的；</p>
+<p>同时，通过bind，改变privateSay方法内部的this指向，从而可以操作实例的所有属性。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/16/symbol/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Never">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/16/symbol/" itemprop="url">es2015 Symbol学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-16T20:16:02+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">javascript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-symbol是什么？"><a href="#1-symbol是什么？" class="headerlink" title="1. symbol是什么？"></a>1. symbol是什么？</h3><p>symbol是es2015中的一种新的基本数据类型，并不是一种新的对象；它和string，int，等基本数据类型一致<br><strong>表示的是独一无二的值</strong></p>
+<h3 id="2-symbol如何使用？"><a href="#2-symbol如何使用？" class="headerlink" title="2. symbol如何使用？"></a>2. symbol如何使用？</h3><h4 id="①"><a href="#①" class="headerlink" title="①"></a>①</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var s1 = Symbol();</div><div class="line">console.log(s1);		// Symbol()</div></pre></td></tr></table></figure>
+<p>创建一个Symbol类型的变量,看起来很奇怪，但确实就是这么用的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var s1 = Symbol();</div><div class="line">var s2 = Symbol();</div><div class="line">console.log(s1);		// Symbol()</div><div class="line">console.log(s1);		// Symbol()</div><div class="line">console.log(s2 === s1);	//false</div></pre></td></tr></table></figure>
+<p>虽然console.log出来的都是Symbol（），但是s1跟s2却不相等，这就说明了每一个symbol值都是独一无二的</p>
+<p>但是，如果我们需要生成多个，如何标识不同的symbol呢？<br>可以用下面的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var s1 = Symbol(&quot;s1&quot;);</div><div class="line">var s2 = Symbol(&quot;s2&quot;);</div><div class="line">console.log(s1);	// Symbol(s1)</div><div class="line">console.log(s2);	// Symbol(s2)</div></pre></td></tr></table></figure></p>
+<p>这样，在调试的时候，就会分清楚不同的symbol数据。注意，就算给两个symbol函数传递相同的参数，其返回的symbol值也是不同的，参数只不过是一个标识而已。</p>
+<h4 id="②"><a href="#②" class="headerlink" title="②"></a>②</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var s1 = Symbol.for(&quot;s1&quot;)</div><div class="line">var s2 = Symbol.for(&quot;s1&quot;);</div><div class="line">console.log(s2 === s1);     //true</div></pre></td></tr></table></figure>
+<p>symbol的第二种初始化方法：Symbol.for()<br>这种方法也可以生成一个symbol值，与上一中方法的区别在于：方法2会在全局中搜索是否已经有使用s1标识的symbol值，如果有，就使用已经有的symbol，所以s1 与 s2 是相等的。</p>
+<h3 id="3-Symbol可以用来做什么？"><a href="#3-Symbol可以用来做什么？" class="headerlink" title="3. Symbol可以用来做什么？"></a>3. Symbol可以用来做什么？</h3><h4 id="①-用来当做对象的属性"><a href="#①-用来当做对象的属性" class="headerlink" title="① 用来当做对象的属性"></a>① 用来当做对象的属性</h4><p>在js中，对象属性的值是可以被修改的，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;</div><div class="line">	name : &quot;kevin&quot;</div><div class="line">&#125;</div><div class="line">obj.name = &quot;zhou&quot;;</div><div class="line">console.log(obj.name); //zhou</div></pre></td></tr></table></figure></p>
+<p>这会出现很麻烦的状况。例如，继承了一个类，想要给这个类添加自己的方法，但是你不知道所添加的方法会不会跟已经有的方法冲突，如果冲突，会直接导致原来的方法被覆盖…</p>
+<p>可以使用symbol来解决这个问题，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var mySymbol = Symbol(&quot;s1&quot;);</div><div class="line">var a = &#123;&#125;;</div><div class="line">a[mySymbol] = &quot;hello&quot;;</div><div class="line">a.mySymbol = &quot;zhou&quot;;</div><div class="line">console.log(a[mySymbol]);  // hello</div><div class="line">console.log(a.mySymbol)    // zhou</div></pre></td></tr></table></figure>
+<p>这样，新添加的属性不会覆盖原来的属性</p>
+<h3 id="4-遍历对象的symbol属性"><a href="#4-遍历对象的symbol属性" class="headerlink" title="4 遍历对象的symbol属性"></a>4 遍历对象的symbol属性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var s1 = Symbol(&quot;s1&quot;);</div><div class="line">var s2 = Symbol(&quot;s2&quot;);</div><div class="line">var obj = &#123;</div><div class="line">	[s1]:&quot;aaa&quot;,</div><div class="line">	[s2]:&quot;bbb&quot;,</div><div class="line">	&quot;s3&quot;:&quot;ccc&quot;</div><div class="line">&#125;</div><div class="line">console.log(Reflect.ownKeys(obj));//[&quot;s3&quot;, Symbol(s1), Symbol(s2)]</div></pre></td></tr></table></figure>
+<p>Reflect.ownKeys()可以遍历出所有的属性，包括string类型和symbol类型<br>这里顺便提一下对象属性的各种遍历方法：</p>
+<h5 id="①-忽略了-symbol-类型的属性键："><a href="#①-忽略了-symbol-类型的属性键：" class="headerlink" title="① 忽略了 symbol 类型的属性键："></a>① 忽略了 symbol 类型的属性键：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">console.log(Object.getOwnPropertyNames(obj)); //[&quot;s3&quot;]</div></pre></td></tr></table></figure>
+<h5 id="②-忽略了-string-类型的属性键："><a href="#②-忽略了-string-类型的属性键：" class="headerlink" title="② 忽略了 string 类型的属性键："></a>② 忽略了 string 类型的属性键：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">console.log(Object.getOwnPropertySymbols(obj));//[Symbol(s1), Symbol(s2)]</div></pre></td></tr></table></figure>
+<h5 id="③-Object-keys-并不像它的名字那样有用，它只作用于字符串类型并且可以枚举的-key"><a href="#③-Object-keys-并不像它的名字那样有用，它只作用于字符串类型并且可以枚举的-key" class="headerlink" title="③ Object.keys() 并不像它的名字那样有用，它只作用于字符串类型并且可以枚举的 key"></a>③ Object.keys() 并不像它的名字那样有用，它只作用于字符串类型并且可以枚举的 key</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">console.log(Object.keys(obj));//(2) [Symbol(s1), Symbol(s2)]</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/15/javascript中的this/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -684,6 +975,306 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/SpringMVC 统一异常处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Never">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/22/SpringMVC 统一异常处理/" itemprop="url">SpringMVC 异常统一处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="SpringMVC-异常统一处理"><a href="#SpringMVC-异常统一处理" class="headerlink" title="SpringMVC 异常统一处理"></a>SpringMVC 异常统一处理</h1><p>使用springMVC中的注解：@ControllerAdvice 来实现系统中异常的统一处理</p>
+<ul>
+<li>1.代码目录中新建一个异常处理类：SimpleException.java</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">package com.springmvc.exceptions;</div><div class="line"></div><div class="line">import javax.servlet.http.HttpServletRequest;</div><div class="line">import org.springframework.web.bind.annotation.ControllerAdvice;</div><div class="line">import org.springframework.web.bind.annotation.ExceptionHandler;</div><div class="line">import org.springframework.web.bind.annotation.ResponseBody;</div><div class="line"></div><div class="line">@ControllerAdvice</div><div class="line">public class SimpleException&#123;</div><div class="line"></div><div class="line">	@ExceptionHandler(ArithmeticException.class)</div><div class="line">	@ResponseBody</div><div class="line">	public String handleException(HttpServletRequest request,Exception ex)&#123;</div><div class="line">		return &quot;catch a Exception&quot;;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注解：@ExceptionHandler可以定义哪种异常需要被捕获</p>
+<ul>
+<li>2.在spring-mvc.xml添加配置，让注解：@ControllerAdvice能够被spring扫描器获取<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">    &lt;context:component-scan base-package=&quot;com.springmvc&quot;&gt;</div><div class="line">	&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;</div><div class="line">	&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.web.bind.annotation.ControllerAdvice&quot;/&gt;</div><div class="line">&lt;/context:component-scan&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.web.bind.annotation.ControllerAdvice&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<p>使得注解能够生效</p>
+<ul>
+<li>3.编写测试代码：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">   @ResponseBody</div><div class="line">@RequestMapping(value=&quot;/exception&quot;)</div><div class="line">public TestPOJO getException()&#123;</div><div class="line">	TestPOJO person = new TestPOJO();</div><div class="line">	person.setAge(11);</div><div class="line">	person.setUserName(&quot;kevin&quot;);</div><div class="line">	int a = 3/0;</div><div class="line">	return person;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这个方法中，除数为0 ，会抛出一个ArithmeticException。这个异常将会被SimpleException中的handleException所捕获。</p>
+<p><img src="/images/ex.png" alt="ex.png"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/require.js的使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Never">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/22/require.js的使用/" itemprop="url">requirejs的基本使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/javascript/" itemprop="url" rel="index">
+                    <span itemprop="name">javascript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-Require-js优势："><a href="#1-Require-js优势：" class="headerlink" title="1.Require.js优势："></a>1.Require.js优势：</h2><p>require.js 主要使用来管理js模块的。使用它的好处主要是能够异步加载js文件，防止js加载阻止浏览器渲染页面，同时能够使js模块的管理变得更加简洁和方便。</p>
+<h2 id="2-Require-js的基本使用"><a href="#2-Require-js的基本使用" class="headerlink" title="2.Require.js的基本使用"></a>2.Require.js的基本使用</h2><p>例如，如果我们想要在页面中加载一个js文件，我们可以这样写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot; src=&quot;require.js&quot;&gt;&lt;/script&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">            require([&quot;a&quot;]);</div><div class="line">        &lt;/script&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">      &lt;span&gt;body&lt;/span&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<p>其中，a.js文件的内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">define(function()&#123;</div><div class="line">    function fun1()&#123;</div><div class="line">      alert(&quot;it works&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    fun1();</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>可以注意到，require.js有两个主要的参数：require和define<br>显而易见，define是在定义一个模块的时候使用，而require是在引入一个模块的时候使用</p>
+<h2 id="Require-js-配置"><a href="#Require-js-配置" class="headerlink" title="Require.js 配置"></a>Require.js 配置</h2><p>大多数时候我们使用的js文件可能是在CND服务器上，那么上面那种实现方式就不太好了，需要使用配置文件</p>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">require.config(&#123;</div><div class="line">    paths : &#123;</div><div class="line">        &quot;jquery&quot; : [&quot;http://libs.baidu.com/jquery/2.0.3/jquery&quot;],</div><div class="line">        &quot;a&quot; : &quot;js/a&quot;   </div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>我们给一个本地js文件a.js起了别名a，同时给百度CND上Jquery文件起了别名jquery<br>我们也可以给jquery加上多个加载路径，比如：<br>配置文件：main.js<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">require.config(&#123;</div><div class="line">    paths : &#123;</div><div class="line">        &quot;jquery&quot; : [&quot;http://libs.baidu.com/jquery/2.0.3/jquery&quot;,&quot;js/jquery&quot;],</div><div class="line">        &quot;a&quot; : &quot;js/a&quot;   </div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>如果远程cnd加载失败，则使用本地jquery文件<br>在html页面中，我们这样使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot; src=&quot;require.js&quot;&gt;&lt;/script&gt;</div><div class="line">       &lt;script type=&quot;text/javascript&quot; src=&quot;js/require.config.js&quot;&gt;&lt;/script&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">            require([&quot;a&quot;]);</div><div class="line">        &lt;/script&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">      &lt;span&gt;body&lt;/span&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<p>或者，我们可以这样使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot; data-main=&quot;js/main&quot; src=&quot;require.js&quot;&gt;&lt;/script&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">            require([&quot;a&quot;]);</div><div class="line">        &lt;/script&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">      &lt;span&gt;body&lt;/span&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<p>解释一下，加载requirejs脚本的script标签加入了data-main属性，这个属性指定的js将在加载完reuqire.js后处理，我们把require.config的配置加入到data-main后，就可以使每一个页面都使用这个配置，然后页面中就可以直接使用require来加载所有的短模块名</p>
+<h2 id="依赖配置"><a href="#依赖配置" class="headerlink" title="依赖配置"></a>依赖配置</h2><p>如果引入的js模块之间有依赖关系，则按照如下方式实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">require.config(&#123;</div><div class="line">    paths:&#123;</div><div class="line">        uui:&apos;ui/uui.js&apos;,</div><div class="line">        knockout:&apos;js/knockout&apos;</div><div class="line">    &#125;,</div><div class="line">    shim:&#123;</div><div class="line">        &apos;uui&apos;:&#123;</div><div class="line">            deps:[&quot;knockout&quot;]</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/js变量作用域/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -980,306 +1571,6 @@ afterCompletion
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/SpringMVC 统一异常处理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Never">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/22/SpringMVC 统一异常处理/" itemprop="url">SpringMVC 异常统一处理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
-                2017-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">in</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="SpringMVC-异常统一处理"><a href="#SpringMVC-异常统一处理" class="headerlink" title="SpringMVC 异常统一处理"></a>SpringMVC 异常统一处理</h1><p>使用springMVC中的注解：@ControllerAdvice 来实现系统中异常的统一处理</p>
-<ul>
-<li>1.代码目录中新建一个异常处理类：SimpleException.java</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">package com.springmvc.exceptions;</div><div class="line"></div><div class="line">import javax.servlet.http.HttpServletRequest;</div><div class="line">import org.springframework.web.bind.annotation.ControllerAdvice;</div><div class="line">import org.springframework.web.bind.annotation.ExceptionHandler;</div><div class="line">import org.springframework.web.bind.annotation.ResponseBody;</div><div class="line"></div><div class="line">@ControllerAdvice</div><div class="line">public class SimpleException&#123;</div><div class="line"></div><div class="line">	@ExceptionHandler(ArithmeticException.class)</div><div class="line">	@ResponseBody</div><div class="line">	public String handleException(HttpServletRequest request,Exception ex)&#123;</div><div class="line">		return &quot;catch a Exception&quot;;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>注解：@ExceptionHandler可以定义哪种异常需要被捕获</p>
-<ul>
-<li>2.在spring-mvc.xml添加配置，让注解：@ControllerAdvice能够被spring扫描器获取<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">    &lt;context:component-scan base-package=&quot;com.springmvc&quot;&gt;</div><div class="line">	&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;</div><div class="line">	&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.web.bind.annotation.ControllerAdvice&quot;/&gt;</div><div class="line">&lt;/context:component-scan&gt;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>其中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.web.bind.annotation.ControllerAdvice&quot;/&gt;</div></pre></td></tr></table></figure></p>
-<p>使得注解能够生效</p>
-<ul>
-<li>3.编写测试代码：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">   @ResponseBody</div><div class="line">@RequestMapping(value=&quot;/exception&quot;)</div><div class="line">public TestPOJO getException()&#123;</div><div class="line">	TestPOJO person = new TestPOJO();</div><div class="line">	person.setAge(11);</div><div class="line">	person.setUserName(&quot;kevin&quot;);</div><div class="line">	int a = 3/0;</div><div class="line">	return person;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>这个方法中，除数为0 ，会抛出一个ArithmeticException。这个异常将会被SimpleException中的handleException所捕获。</p>
-<p><img src="/images/ex.png" alt="ex.png"></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/require.js的使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Never">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/22/require.js的使用/" itemprop="url">requirejs的基本使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
-                2017-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">in</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-Require-js优势："><a href="#1-Require-js优势：" class="headerlink" title="1.Require.js优势："></a>1.Require.js优势：</h2><p>require.js 主要使用来管理js模块的。使用它的好处主要是能够异步加载js文件，防止js加载阻止浏览器渲染页面，同时能够使js模块的管理变得更加简洁和方便。</p>
-<h2 id="2-Require-js的基本使用"><a href="#2-Require-js的基本使用" class="headerlink" title="2.Require.js的基本使用"></a>2.Require.js的基本使用</h2><p>例如，如果我们想要在页面中加载一个js文件，我们可以这样写：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot; src=&quot;require.js&quot;&gt;&lt;/script&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">            require([&quot;a&quot;]);</div><div class="line">        &lt;/script&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">      &lt;span&gt;body&lt;/span&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>其中，a.js文件的内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">define(function()&#123;</div><div class="line">    function fun1()&#123;</div><div class="line">      alert(&quot;it works&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    fun1();</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<p>可以注意到，require.js有两个主要的参数：require和define<br>显而易见，define是在定义一个模块的时候使用，而require是在引入一个模块的时候使用</p>
-<h2 id="Require-js-配置"><a href="#Require-js-配置" class="headerlink" title="Require.js 配置"></a>Require.js 配置</h2><p>大多数时候我们使用的js文件可能是在CND服务器上，那么上面那种实现方式就不太好了，需要使用配置文件</p>
-<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">require.config(&#123;</div><div class="line">    paths : &#123;</div><div class="line">        &quot;jquery&quot; : [&quot;http://libs.baidu.com/jquery/2.0.3/jquery&quot;],</div><div class="line">        &quot;a&quot; : &quot;js/a&quot;   </div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<p>我们给一个本地js文件a.js起了别名a，同时给百度CND上Jquery文件起了别名jquery<br>我们也可以给jquery加上多个加载路径，比如：<br>配置文件：main.js<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">require.config(&#123;</div><div class="line">    paths : &#123;</div><div class="line">        &quot;jquery&quot; : [&quot;http://libs.baidu.com/jquery/2.0.3/jquery&quot;,&quot;js/jquery&quot;],</div><div class="line">        &quot;a&quot; : &quot;js/a&quot;   </div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
-<p>如果远程cnd加载失败，则使用本地jquery文件<br>在html页面中，我们这样使用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot; src=&quot;require.js&quot;&gt;&lt;/script&gt;</div><div class="line">       &lt;script type=&quot;text/javascript&quot; src=&quot;js/require.config.js&quot;&gt;&lt;/script&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">            require([&quot;a&quot;]);</div><div class="line">        &lt;/script&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">      &lt;span&gt;body&lt;/span&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>或者，我们可以这样使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot; data-main=&quot;js/main&quot; src=&quot;require.js&quot;&gt;&lt;/script&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">            require([&quot;a&quot;]);</div><div class="line">        &lt;/script&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">      &lt;span&gt;body&lt;/span&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<p>解释一下，加载requirejs脚本的script标签加入了data-main属性，这个属性指定的js将在加载完reuqire.js后处理，我们把require.config的配置加入到data-main后，就可以使每一个页面都使用这个配置，然后页面中就可以直接使用require来加载所有的短模块名</p>
-<h2 id="依赖配置"><a href="#依赖配置" class="headerlink" title="依赖配置"></a>依赖配置</h2><p>如果引入的js模块之间有依赖关系，则按照如下方式实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">require.config(&#123;</div><div class="line">    paths:&#123;</div><div class="line">        uui:&apos;ui/uui.js&apos;,</div><div class="line">        knockout:&apos;js/knockout&apos;</div><div class="line">    &#125;,</div><div class="line">    shim:&#123;</div><div class="line">        &apos;uui&apos;:&#123;</div><div class="line">            deps:[&quot;knockout&quot;]</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1326,7 +1617,7 @@ afterCompletion
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
