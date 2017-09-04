@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="js,函数" />
+  <meta name="keywords" content="js" />
 
 
 
@@ -93,18 +93,18 @@
 
 
 
-<meta name="description" content="方式1：12345function foo()&amp;#123;    console.log(&amp;quot;hello world&amp;quot;);&amp;#125;foo(); 方式2：12345var foo =  function()&amp;#123;    console.log(&amp;quot;hello world&amp;quot;);&amp;#125;foo(); 方式3：使用构造函数克隆方法12var foo = n">
-<meta name="keywords" content="js,函数">
+<meta name="description" content="本文主要记录的是执行上下文中的变量对象。 一、什么是作用域？作用域是指代码中所定义的变量的可见范围作用域分为词法作用域（静态作用域）和动态作用域静态作用域：    变量的可见范围根据定义时的位置确定；动态作用域：    变量的可见范围在代码执行时才能确定；javascript采用的是静态作用域（词法作用域） 二、 变量对象的组成变量对象中存储的是javascript代码执行上下文相关的数据作用域，">
+<meta name="keywords" content="js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js定义函数的三种方式">
-<meta property="og:url" content="http://yoursite.com/2017/07/22/JS定义函数的三种方式/index.html">
+<meta property="og:title" content="javscript中的变量对象">
+<meta property="og:url" content="http://yoursite.com/2017/09/04/javascript 中的变量对象/index.html">
 <meta property="og:site_name" content="Never">
-<meta property="og:description" content="方式1：12345function foo()&amp;#123;    console.log(&amp;quot;hello world&amp;quot;);&amp;#125;foo(); 方式2：12345var foo =  function()&amp;#123;    console.log(&amp;quot;hello world&amp;quot;);&amp;#125;foo(); 方式3：使用构造函数克隆方法12var foo = n">
+<meta property="og:description" content="本文主要记录的是执行上下文中的变量对象。 一、什么是作用域？作用域是指代码中所定义的变量的可见范围作用域分为词法作用域（静态作用域）和动态作用域静态作用域：    变量的可见范围根据定义时的位置确定；动态作用域：    变量的可见范围在代码执行时才能确定；javascript采用的是静态作用域（词法作用域） 二、 变量对象的组成变量对象中存储的是javascript代码执行上下文相关的数据作用域，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-07-24T00:42:23.423Z">
+<meta property="og:updated_time" content="2017-09-04T12:37:01.862Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js定义函数的三种方式">
-<meta name="twitter:description" content="方式1：12345function foo()&amp;#123;    console.log(&amp;quot;hello world&amp;quot;);&amp;#125;foo(); 方式2：12345var foo =  function()&amp;#123;    console.log(&amp;quot;hello world&amp;quot;);&amp;#125;foo(); 方式3：使用构造函数克隆方法12var foo = n">
+<meta name="twitter:title" content="javscript中的变量对象">
+<meta name="twitter:description" content="本文主要记录的是执行上下文中的变量对象。 一、什么是作用域？作用域是指代码中所定义的变量的可见范围作用域分为词法作用域（静态作用域）和动态作用域静态作用域：    变量的可见范围根据定义时的位置确定；动态作用域：    变量的可见范围在代码执行时才能确定；javascript采用的是静态作用域（词法作用域） 二、 变量对象的组成变量对象中存储的是javascript代码执行上下文相关的数据作用域，">
 
 
 
@@ -132,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/22/JS定义函数的三种方式/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/04/javascript 中的变量对象/"/>
 
 
 
 
 
-  <title>js定义函数的三种方式 | Never</title>
+  <title>javscript中的变量对象 | Never</title>
   
 
 
@@ -257,7 +257,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/22/JS定义函数的三种方式/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/04/javascript 中的变量对象/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kevin Chou">
@@ -274,7 +274,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">js定义函数的三种方式</h1>
+          <h1 class="post-title" itemprop="name headline">javscript中的变量对象</h1>
         
 
         <div class="post-meta">
@@ -286,8 +286,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T11:05:02+08:00">
-                2017-07-22
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-04T20:26:02+08:00">
+                2017-09-04
               </time>
             
 
@@ -343,16 +343,24 @@
       
 
       
-        <h1 id="方式1："><a href="#方式1：" class="headerlink" title="方式1："></a>方式1：</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">function foo()&#123;</div><div class="line">    console.log(&quot;hello world&quot;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">foo();</div></pre></td></tr></table></figure>
-<h1 id="方式2："><a href="#方式2：" class="headerlink" title="方式2："></a>方式2：</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var foo =  function()&#123;</div><div class="line">    console.log(&quot;hello world&quot;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">foo();</div></pre></td></tr></table></figure>
-<h1 id="方式3："><a href="#方式3：" class="headerlink" title="方式3："></a>方式3：</h1><h2 id="使用构造函数克隆方法"><a href="#使用构造函数克隆方法" class="headerlink" title="使用构造函数克隆方法"></a>使用构造函数克隆方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var foo = new Function(&quot;a&quot;,&quot;b&quot;,&quot;alert(a+b)&quot;);</div><div class="line">foo();</div></pre></td></tr></table></figure>
-<p>日常中主要使用的是前两种方式。下面介绍一下二者的区别。</p>
-<p>for example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">A();</div><div class="line">//output: hello A</div><div class="line">function A()&#123;</div><div class="line">    console.log(&quot;hello A&quot;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">B();</div><div class="line">//output: B is not a function</div><div class="line">var B = function()&#123;</div><div class="line">    console.log(&quot;hello B&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>第一种方式中，函数的声明和定义都“被提前”了。所以，函数可以正确的被执行<br>第二种方式中，把函数作为值赋值给一个变量，变量的声明被提前，但是变量的赋值操作却不能够被提前，<br>因此会出现“B is not a function”的提示</p>
-<p>总结：<br>函数的定义方式有三种<br>“函数声明”式定义方法（方法①）：函数的声明和定义均被提前到作用于顶部；<br>“变量赋值”式定义方法（方法②）：函数的声明被提前到作用域顶部，但是赋值被留在原地。</p>
-<p>关于js中函数和变量声明的“提前”，可以参考这篇博客内容：<br><a href="http://www.bootcss.com/article/variable-and-function-hoisting-in-javascript/" target="_blank" rel="external">http://www.bootcss.com/article/variable-and-function-hoisting-in-javascript/</a></p>
-
+        <p>本文主要记录的是执行上下文中的变量对象。</p>
+<h3 id="一、什么是作用域？"><a href="#一、什么是作用域？" class="headerlink" title="一、什么是作用域？"></a>一、什么是作用域？</h3><p>作用域是指代码中所定义的变量的可见范围<br>作用域分为词法作用域（静态作用域）和动态作用域<br>静态作用域：<br>    变量的可见范围根据定义时的位置确定；<br>动态作用域：<br>    变量的可见范围在代码执行时才能确定；<br><strong>javascript采用的是静态作用域（词法作用域）</strong></p>
+<h3 id="二、-变量对象的组成"><a href="#二、-变量对象的组成" class="headerlink" title="二、 变量对象的组成"></a>二、 变量对象的组成</h3><p>变量对象中存储的是javascript代码执行上下文相关的数据作用域，也就是说，在运行时，javascript会在VO中寻找变量。VO中通常包含以下三种变量：</p>
+<ul>
+<li>通过var 关键字声明的变量；</li>
+<li>函数的声明</li>
+<li>函数的形参</li>
+</ul>
+<p><strong>注意：有两类变量不会出现在VO中：</strong><br>        <strong>① 没有用var关键字声明的变量，即全局变量</strong><br>        <strong>② 函数的表达式（非函数的定义）</strong><br>例如，如果上述代码多了以下两行，则Global Execution Context不会改变：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(function bar()&#123;&#125;) // function expression, FE</div><div class="line">baz = &quot;property of global object&quot;</div></pre></td></tr></table></figure></p>
+<p>没有使用var关键字声明的变量，其实就是window对象的一个属性，并不会存在VO中。</p>
+<h3 id="三、细看Execution-Context"><a href="#三、细看Execution-Context" class="headerlink" title="三、细看Execution Context"></a>三、细看Execution Context</h3><p>javascript代码的执行有两个阶段：<br>    ①进入执行上下文（函数内部代码执行之前）<br>    ②执行阶段，开始解释执行内部代码<br>我们首先看第一个阶段做了什么：<br>    ①创建作用域链（scope chain）<br>    ②创建VO对象<br>    ③创建this<br>这里详细的解释一下第二步：创建VO对象</p>
+<h4 id="根据函数形参创建arguments-object；"><a href="#根据函数形参创建arguments-object；" class="headerlink" title="根据函数形参创建arguments object；"></a>根据函数形参创建arguments object；</h4><h4 id="所有的函数名和函数引用存入VO中；"><a href="#所有的函数名和函数引用存入VO中；" class="headerlink" title="所有的函数名和函数引用存入VO中；"></a>所有的函数名和函数引用存入VO中；</h4><p>遍历所有的函数声明，将函数名和函数引用存入VO中；<br>如果有重复的函数名，则后者覆盖前者；</p>
+<h4 id="变量声明，所有的变量收集到VO中；"><a href="#变量声明，所有的变量收集到VO中；" class="headerlink" title="变量声明，所有的变量收集到VO中；"></a>变量声明，所有的变量收集到VO中；</h4><p><strong>遍历所有的变量声明，将函数名存入VO中，对应的value是undefined；</strong><br><strong>如果收集的变量名跟形参或者方法名重合，则变量名不会对其产生影响</strong></p>
+<p>下面看一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">function foo(i) &#123;</div><div class="line">    var a = &apos;hello&apos;;</div><div class="line">    var b = function privateB() &#123;</div><div class="line"></div><div class="line">    &#125;;</div><div class="line">    function c() &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">foo(22);</div></pre></td></tr></table></figure>
+<p>上述代码在“创建阶段”，会生成下面的VO<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">fooExecutionContext = &#123;</div><div class="line">    scopeChain: &#123; ... &#125;,</div><div class="line">    variableObject: &#123;</div><div class="line">        arguments: &#123;</div><div class="line">            0: 22,</div><div class="line">            length: 1</div><div class="line">        &#125;,</div><div class="line">        i: 22,</div><div class="line">        c: pointer to function c()</div><div class="line">        a: undefined,</div><div class="line">        b: undefined</div><div class="line">    &#125;,</div><div class="line">    this: &#123; ... &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>而在激活/执行阶段，VO就会被修改成如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">fooExecutionContext = &#123;</div><div class="line">    scopeChain: &#123; ... &#125;,</div><div class="line">    variableObject: &#123;</div><div class="line">        arguments: &#123;</div><div class="line">            0: 22,</div><div class="line">            length: 1</div><div class="line">        &#125;,</div><div class="line">        i: 22,</div><div class="line">        c: pointer to function c()</div><div class="line">        a: &apos;hello&apos;,</div><div class="line">        b: pointer to function privateB()</div><div class="line">    &#125;,</div><div class="line">    this: &#123; ... &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
 
@@ -381,7 +389,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/js-函数/" rel="tag"># js,函数</a>
+            <a href="/tags/js/" rel="tag"># js</a>
           
         </div>
       
@@ -394,8 +402,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/22/require.js的使用/" rel="next" title="requirejs的基本使用">
-                <i class="fa fa-chevron-left"></i> requirejs的基本使用
+              <a href="/2017/09/04/javascript 执行上下文/" rel="next" title="javscript执行上下文">
+                <i class="fa fa-chevron-left"></i> javscript执行上下文
               </a>
             
           </div>
@@ -403,10 +411,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/22/SpringMVC 统一异常处理/" rel="prev" title="SpringMVC 异常统一处理">
-                SpringMVC 异常统一处理 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -536,7 +540,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#方式1："><span class="nav-number">1.</span> <span class="nav-text">方式1：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方式2："><span class="nav-number">2.</span> <span class="nav-text">方式2：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方式3："><span class="nav-number">3.</span> <span class="nav-text">方式3：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用构造函数克隆方法"><span class="nav-number">3.1.</span> <span class="nav-text">使用构造函数克隆方法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、什么是作用域？"><span class="nav-number">1.</span> <span class="nav-text">一、什么是作用域？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、-变量对象的组成"><span class="nav-number">2.</span> <span class="nav-text">二、 变量对象的组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、细看Execution-Context"><span class="nav-number">3.</span> <span class="nav-text">三、细看Execution Context</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#根据函数形参创建arguments-object；"><span class="nav-number">3.1.</span> <span class="nav-text">根据函数形参创建arguments object；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#所有的函数名和函数引用存入VO中；"><span class="nav-number">3.2.</span> <span class="nav-text">所有的函数名和函数引用存入VO中；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量声明，所有的变量收集到VO中；"><span class="nav-number">3.3.</span> <span class="nav-text">变量声明，所有的变量收集到VO中；</span></a></li></ol></li></ol></div>
             
 
           </div>
